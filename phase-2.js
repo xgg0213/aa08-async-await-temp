@@ -57,12 +57,23 @@ function liftWeights(timeLeft) {
 
 // refactor this function to handle Promises using async/await instead of
   // .then and .catch
-function workout(totalTime) {
-  stretch(totalTime)
-    .then(timeLeftAfterStretching => runOnTreadmill(timeLeftAfterStretching))
-    .then(timeLeftAfterRunning => liftWeights(timeLeftAfterRunning))
-    .then(res => console.log(`done working out with ${res/1000} seconds left`))
-    .catch(err => console.log('Error: ', err));
+// function workout(totalTime) {
+//   stretch(totalTime)
+//     .then(timeLeftAfterStretching => runOnTreadmill(timeLeftAfterStretching))
+//     .then(timeLeftAfterRunning => liftWeights(timeLeftAfterRunning))
+//     .then(res => console.log(`done working out with ${res/1000} seconds left`))
+//     .catch(err => console.log('Error: ', err));
+// }
+
+async function workout(totalTime) {
+  try {
+  const s1 = await stretch(totalTime);
+  const s2 = await runOnTreadmill(s1);
+  const s3 = await liftWeights(s2);
+  console.log("done working out")
+  } catch(err) {
+    console.log('Error: ' + err)
+  }
 }
 
 
@@ -75,7 +86,7 @@ Comment in each invocation of your workout function below and run the file
 
 // workout(500);
   // should print out the following:
-    // Error:  you dont have enough time to stretch
+  //   Error:  you dont have enough time to stretch
 
 
 // workout(1000);
@@ -91,7 +102,7 @@ Comment in each invocation of your workout function below and run the file
     // Error:  you dont have enough time to lift weights
 
 
-// workout(4000);
+workout(4000);
   // should print out the following:
   //   done stretching
   //   done running on treadmill
